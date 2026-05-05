@@ -1,0 +1,72 @@
+---
+title: Users, roles, and audit trail
+sidebarTitle: Users & audit
+description: Invite teammates, assign roles, and review the audit trail of every change made in Reeva.
+---
+
+Reeva keeps user management and the audit trail under **Settings**. You'll find both as tabs on the Settings page.
+
+## Roles
+
+Reeva uses a small set of roles. Assign each teammate the lowest role that lets them do their job.
+
+| Role | Can do | Cannot do |
+| --- | --- | --- |
+| **Admin** | Everything: invite users, manage integrations, build agents, approve flagged items, view the audit trail. | — |
+| **Product manager** | Build and edit agents, approve flagged items, view Monitor and audit. | Manage integrations or invite users. |
+| **Data steward** | Approve flagged items in Monitor, view audit. | Build or edit agents. |
+
+If you need a different breakdown of permissions, email [support@reeva.ai](mailto:support@reeva.ai).
+
+## Invite a teammate
+
+<Steps>
+  <Step title="Open Users & Roles">
+    Go to **Settings → Users & Roles**.
+  </Step>
+  <Step title="Add the user">
+    Click **Add user**. Enter their work email and pick a role.
+  </Step>
+  <Step title="Send the invite">
+    Click **Invite**. They'll receive an email with a sign-in link. Invites expire after 7 days — re-send if needed.
+  </Step>
+</Steps>
+
+## Change someone's role or remove them
+
+<Steps>
+  <Step title="Find the user">
+    On **Settings → Users & Roles**, find the row for the user you want to change.
+  </Step>
+  <Step title="Change role or remove">
+    Click the role badge to change it, or use the row menu to remove the user. Removing a user immediately revokes their access — any agents they built keep running.
+  </Step>
+</Steps>
+
+## Audit trail
+
+Every meaningful action in Reeva is recorded in the audit trail: agent changes, integration connects and disconnects, approvals in Monitor, user invites, role changes, and writes to your connected systems.
+
+### What's logged
+
+- **Actor** — the user (or the system, for scheduled actions)
+- **Action** — what they did (e.g., `agent.enable`, `integration.connect`, `catalog.publish`)
+- **Target** — what was affected (e.g., the agent ID, the integration name, the SKU written)
+- **Timestamp** — when it happened, in UTC
+
+### Review the audit trail
+
+Go to **Settings → Audit Trail**. Entries are listed newest-first. Common reasons to check it:
+
+- **Something looks off in SAP or Teamcenter.** Find the agent run that produced it.
+- **A teammate is asking why a flagged item changed.** Find the actor who approved it.
+- **You're preparing for a security review.** Export the recent entries.
+
+### Retention
+
+Audit entries are retained for at least **12 months**. Email [support@reeva.ai](mailto:support@reeva.ai) if you need a longer retention window for compliance reasons.
+
+## Related
+
+- [Monitor](/agents/monitor) — review and approve flagged agent output.
+- [Build an agent](/agents/build) — actions taken here all show up in the audit trail.

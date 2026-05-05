@@ -1,0 +1,61 @@
+---
+title: Overview
+sidebarTitle: Overview
+description: What Reeva is, what it does, and the building blocks you'll use.
+---
+
+Reeva is an AI workflow platform for manufacturers. You build **agents** that read engineering documents and structured data from your existing systems — Teamcenter, SAP, file shares — apply AI to extract or classify what matters, and write the results back to the systems your team already uses.
+
+The most common job: keep engineering documents and data **linked and consistent across Teamcenter and SAP**, so your engineers stop rekeying specs and your operators stop chasing the "real" version of a part.
+
+## What you can do with Reeva
+
+- **Link documents across systems.** Match Teamcenter drawings, datasheets, and specs to the corresponding SAP material masters and BOM lines.
+- **Extract structured data from documents.** Pull attributes from PDFs, spec sheets, and CAD metadata and write them to the right field in the right system.
+- **Validate and route changes.** Detect engineering changes, classify them, and route them through review before they hit downstream systems.
+- **Monitor everything.** See what each agent produced, with confidence scores, in one place.
+
+## Core concepts
+
+<CardGroup cols={2}>
+  <Card title="Agent" icon="workflow">
+    A reusable workflow made of ordered steps. Each agent has a single responsibility — for example, "link new Teamcenter drawings to SAP materials."
+  </Card>
+  <Card title="Step" icon="square-stack">
+    The building block of an agent. Steps come in four types: **trigger**, **action**, **AI**, and **decision**.
+  </Card>
+  <Card title="Integration" icon="plug">
+    A connection to an external system (Teamcenter, SAP, S3, webhook). Agents read from and write to integrations.
+  </Card>
+  <Card title="Monitor" icon="activity">
+    The shared view of every item your agents have produced. Filter by status — published, flagged, linked, queued — and review what needs attention.
+  </Card>
+</CardGroup>
+
+### Step types
+
+Every agent is made of these four step types, in any order:
+
+| Type | What it does | Example |
+| --- | --- | --- |
+| **Trigger** | Starts the agent when something happens. | A new drawing is checked into Teamcenter. |
+| **Action** | Performs a deterministic task. | Fetch the linked spec sheet from a file share. |
+| **AI** | Uses a model to extract, classify, or summarize. | Extract material grade and tolerances from the spec. |
+| **Decision** | Branches on a condition or confidence threshold. | Auto-publish if confidence ≥ 95%, otherwise flag for review. |
+
+## Where things live in the app
+
+| Section | What it's for |
+| --- | --- |
+| **Agents** | List, build, and edit agents. |
+| **Monitor** | Review the items your agents have produced. |
+| **Conversations** | Ask questions about your data and agent runs. |
+| **Settings → Integrations** | Connect and manage Teamcenter, SAP, and other systems. |
+| **Settings → Users & Roles** | Invite teammates and assign permissions. |
+| **Settings → Audit Trail** | See who changed what, and when. |
+
+## Next steps
+
+- Follow the [Quickstart](/get-started/quickstart) to sign in and run your first agent.
+- Learn how to [build an agent](/agents/build) step by step.
+- Connect [Teamcenter](/integrations/teamcenter) and [SAP](/integrations/sap).

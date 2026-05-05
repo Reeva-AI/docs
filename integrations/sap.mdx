@@ -1,0 +1,73 @@
+---
+title: Connect SAP
+sidebarTitle: SAP
+description: Connect Reeva to SAP so agents can read material masters and BOMs, and (optionally) write updates back.
+---
+
+The SAP integration lets Reeva agents read material masters, bills of materials (BOMs), and document info records from SAP, and (optionally) write attribute updates back through standard interfaces.
+
+## What Reeva can do with SAP
+
+- **Read** material master records (basic data, classification, units of measure)
+- **Read** bills of materials (BOM headers and items)
+- **Read** document info records (DIRs) and the documents linked to them
+- **Watch** for new or changed materials and BOMs as triggers
+- **Write** attribute and classification updates back to materials (when configured by an admin)
+
+## Supported SAP systems
+
+Reeva supports both SAP S/4HANA and SAP ECC, on-prem or in SAP-hosted cloud. The connection uses standard SAP-released interfaces (OData services / RFC-based BAPIs). Your Basis team chooses which is preferred for your environment.
+
+## Before you connect
+
+Get the following from your SAP Basis or integration team:
+
+- The SAP gateway or OData endpoint URL
+- A service user with read access (and, if you want write-back, change access) to the relevant material and BOM transactions
+- A list of plants, material types, and BOM usages Reeva should be able to see
+
+<Note>
+  Reeva does not need direct database access to SAP, and never bypasses SAP's authorization checks. The service user's roles determine what Reeva can read and write.
+</Note>
+
+## Connect
+
+<Steps>
+  <Step title="Open the integration">
+    Go to **Settings → Integrations** and click **Connect** on the **SAP** card.
+  </Step>
+  <Step title="Enter your connection details">
+    Paste the endpoint URL and service user credentials from your Basis team. Click **Test connection** to confirm Reeva can authenticate before saving.
+  </Step>
+  <Step title="Scope what Reeva can access">
+    Choose which plants, material types, and BOM usages this connection should expose. Reeva will only see what you scope here, even if the service user has broader rights.
+  </Step>
+  <Step title="Save">
+    Click **Connect**. The card will switch to **Connected**. You can now reference SAP as a source or destination in any agent.
+  </Step>
+</Steps>
+
+## Using SAP in an agent
+
+Once connected, SAP shows up as an option in:
+
+- **Trigger** steps — fire on new materials, new BOMs, or changed material attributes
+- **Action** steps — look up a material by number, fetch a BOM, write a classification value back
+- **AI** steps — match a Teamcenter item to its SAP material, or extract attributes that should populate a material master
+
+See [Build an agent](/agents/build) for how to wire these together.
+
+## Permissions and safety
+
+- The service user's roles cap what Reeva can do. If the user has read-only access, no agent can write back.
+- All SAP reads and writes Reeva performs are recorded in the [audit trail](/administration/users-and-audit).
+- Reeva uses idempotent writes wherever possible — re-running a step on the same material won't create duplicate records.
+- Disconnecting SAP immediately stops any agent that depends on it; in-flight items move to **Queued** until the connection is restored.
+
+## Troubleshooting
+
+- **"Authentication failed"** — Re-check the username and password. Service users sometimes need their password reset on first use.
+- **"Authorization missing"** — The service user is reachable but lacks the SAP authorization object needed for the transaction. Send the error code to your Basis team.
+- **"Material not found"** — Confirm the plant and material type are in the scope on the integration card.
+
+For more, see [Troubleshooting](/troubleshooting).

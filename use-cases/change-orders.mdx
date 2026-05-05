@@ -1,0 +1,73 @@
+---
+title: Route engineering changes
+sidebarTitle: Change orders
+description: Detect engineering change notices, classify them, and route approved updates to downstream systems.
+---
+
+When an engineering change notice (ECN) is released, the impact rarely stops at engineering — material masters, BOMs, and supplier records often need to change too. This agent detects new ECNs, figures out what's affected downstream, and routes the changes through review before anything is written.
+
+## What this agent does
+
+When a new ECN is released in Teamcenter:
+
+1. Fetch the ECN and the items it affects
+2. For each affected item, look up the corresponding SAP material and BOM
+3. Compute a structured diff of what would change downstream
+4. Classify the change (low impact / medium / high impact)
+5. Auto-apply low-impact changes; route the rest to a reviewer
+
+## Before you start
+
+- [Teamcenter](/integrations/teamcenter) and [SAP](/integrations/sap) are **Connected**
+- Your team has a working definition of "low impact" — typically attribute-only changes that don't touch BOM structure or supplier-facing data
+- The [engineering doc sync agent](/use-cases/engineering-doc-sync) is already running, so Teamcenter items are linked to SAP materials
+
+## Build the agent
+
+<Steps>
+  <Step title="Create the agent">
+    On **Agents**, click **New Agent**. Name it *"Route engineering changes"*.
+  </Step>
+  <Step title="Add the trigger">
+    Add a **trigger** step:
+    - Source: **Teamcenter**
+    - Event: **ECN released**
+  </Step>
+  <Step title="Fetch the change scope">
+    Add an **action** step that fetches the ECN and the list of items it affects from Teamcenter.
+  </Step>
+  <Step title="Resolve to SAP">
+    Add an **action** step that, for each affected item, looks up the linked SAP material and any BOMs that include it.
+  </Step>
+  <Step title="Compute the downstream diff">
+    Add an **action** step that produces a structured diff: which SAP attributes would change, which BOM lines would change, and which downstream documents would need a new revision.
+  </Step>
+  <Step title="Classify the change">
+    Add an **AI** step:
+    - Input: the diff from the previous step
+    - Task: *"Classify the impact of this change as low, medium, or high. Low means attribute-only changes that don't affect BOM structure, supplier-facing data, or compliance fields."*
+    - Output: a classification and a confidence score
+  </Step>
+  <Step title="Add the routing decision">
+    Add a **decision** step:
+    - **Low impact and confidence ≥ 95%** → continue to auto-apply
+    - **Otherwise** → flag for review in **Monitor** and notify the responsible engineer
+  </Step>
+  <Step title="Apply the change">
+    On the auto-apply branch, add **action** steps that write the updates to SAP. On the review branch, leave the apply step disabled until a reviewer approves the item.
+  </Step>
+  <Step title="Turn it on">
+    Toggle the agent **on**. Release a small test ECN to confirm the agent picks it up and routes it correctly.
+  </Step>
+</Steps>
+
+## Tips
+
+- **Default to flagged.** When in doubt, flag for review — auto-applying the wrong change to SAP is far more expensive than reviewing one extra item.
+- **Use roles to route.** Configure your reviewer role in [Users & roles](/administration/users-and-audit). Only people with that role will see flagged items as needing their attention.
+- **Pair with the doc sync agent.** This agent depends on Teamcenter items already being linked to SAP materials. If those links are missing, the [engineering doc sync agent](/use-cases/engineering-doc-sync) is the one to build first.
+
+## Related
+
+- [Engineering doc sync](/use-cases/engineering-doc-sync) — the agent that creates the cross-system links this one relies on.
+- [Audit trail](/administration/users-and-audit) — see exactly what changed and who approved it.

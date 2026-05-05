@@ -1,0 +1,85 @@
+---
+title: Build an agent
+sidebarTitle: Build an agent
+description: Combine triggers, actions, AI steps, and decisions into a workflow that runs on its own.
+---
+
+An **agent** is a sequence of steps that runs whenever its trigger fires. You build agents on the **Agents** page — the left side shows the flow diagram, the right side is a step editor for whichever step you've selected.
+
+## The four step types
+
+Every agent is built from these four kinds of step. You can use as many of each as you need.
+
+<CardGroup cols={2}>
+  <Card title="Trigger" icon="zap">
+    Starts the agent. An agent has exactly one trigger — for example, "a new drawing is checked into Teamcenter" or "a CSV is uploaded."
+  </Card>
+  <Card title="Action" icon="play">
+    A deterministic task. Fetches a file, calls an integration, validates a schema, writes a record back to a source system.
+  </Card>
+  <Card title="AI" icon="sparkles">
+    A model-powered step. Extracts attributes, classifies into a taxonomy, summarizes a document, or matches one record to another.
+  </Card>
+  <Card title="Decision" icon="git-branch">
+    Branches the flow on a condition. Most commonly: a confidence gate that auto-publishes high-confidence results and flags the rest for human review.
+  </Card>
+</CardGroup>
+
+## Build it step by step
+
+<Steps>
+  <Step title="Create the agent">
+    On the **Agents** page, click **New Agent**, give it a clear name and a one-line description.
+  </Step>
+  <Step title="Add a trigger">
+    Click **Add Step** and choose a trigger type. Common triggers:
+    - **New record in a source system** (e.g., new SKU, new drawing, new BOM)
+    - **CSV or file uploaded**
+    - **Field changed** in an existing record
+  </Step>
+  <Step title="Add actions to fetch context">
+    Most workflows need to pull supporting data — spec sheets, prior versions, related parts. Add **action** steps that fetch this from your integrations.
+  </Step>
+  <Step title="Add AI steps to do the thinking">
+    Add **AI** steps for anything that needs interpretation: extracting attributes from a PDF, classifying a part into a category, matching a Teamcenter record to its SAP counterpart. Each AI step returns a result and a confidence score.
+  </Step>
+  <Step title="Add a decision (confidence gate)">
+    Add a **decision** step to split high-confidence results from low-confidence ones. The standard pattern: above a threshold, publish automatically; below it, flag for human review in **Monitor**.
+  </Step>
+  <Step title="Add the final action">
+    End with an **action** step that writes the result somewhere durable: back into SAP, into a Teamcenter attribute, to S3 as a CSV, or out to a webhook.
+  </Step>
+  <Step title="Turn it on">
+    Use the toggle in the top-right of the agent detail page. The agent will run the next time its trigger fires.
+  </Step>
+</Steps>
+
+## Edit a step
+
+Click any step in the flow diagram to open its editor on the right. From there you can:
+
+- Rename the step
+- Edit its description (used by AI steps as part of the instructions)
+- Adjust thresholds for decision steps
+- Pick which integration an action talks to
+
+## Tips for reliable agents
+
+- **Start narrow.** One trigger, one outcome. Add complexity only after the first version is running cleanly.
+- **Use confidence gates.** Don't write directly to SAP or Teamcenter without a decision step that flags low-confidence results.
+- **Run on a sample first.** Use **Conversations** or a small test set before pointing at production data.
+- **Keep step descriptions specific.** AI steps use the description to decide what to do — vague descriptions produce vague results.
+
+## Pre-built starter agents
+
+Reeva ships with a few example agents you can clone and edit:
+
+- **Catalog Enrichment** — pulls specs from source documents and fills in missing fields
+- **New Product Intake** — classifies new products into your taxonomy and validates required fields
+- **Change Management** — detects field edits and routes them through approval
+
+## Next steps
+
+- See your agent's output in [Monitor](/agents/monitor).
+- Connect a source: [Teamcenter](/integrations/teamcenter) or [SAP](/integrations/sap).
+- Try the [engineering doc sync](/use-cases/engineering-doc-sync) walkthrough end to end.

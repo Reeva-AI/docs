@@ -1,14 +1,14 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "almond",
-  "name": "Product Guide",
-  "description": "Step-by-step guides for every product—platform setup, analytics, and integrations in one place.",
+  "name": "Reeva",
+  "description": "Reeva product documentation — build AI agents that link engineering documents and data between Teamcenter, SAP, and your other manufacturing systems.",
   "colors": {
-    "primary": "#166E3F",
-    "light": "#26BD6C",
-    "dark": "#166E3F"
+    "primary": "#00B777",
+    "light": "#26D194",
+    "dark": "#003527"
   },
-  "favicon": "/favicon.ico",
+  "favicon": "/favicon.svg",
   "icons": {
     "library": "lucide"
   },
@@ -27,40 +27,30 @@
           "href": "/"
         },
         {
-          "anchor": "Changelog",
-          "icon": "scroll-text",
-          "href": "https://www.mintlify.com/docs/changelog"
-        },
-        {
-          "anchor": "Help",
+          "anchor": "Support",
           "icon": "life-buoy",
-          "href": "https://www.mintlify.com/docs/contact-support"
+          "href": "/support"
         }
       ]
     },
     "directory": "card",
     "groups": [
       {
-        "group": "Platform",
-        "icon": "layers",
+        "group": "Get started",
+        "icon": "rocket",
         "expanded": true,
         "pages": [
-          "platform/quickstart",
-          "platform/key-concepts",
-          "platform/configuration/settings",
-          "platform/configuration/user-management",
-          "platform/administration/roles-permissions"
+          "get-started/overview",
+          "get-started/quickstart"
         ]
       },
       {
-        "group": "Analytics",
-        "icon": "chart-bar",
+        "group": "Agents",
+        "icon": "workflow",
         "expanded": true,
         "pages": [
-          "analytics/quickstart",
-          "analytics/connect-data",
-          "analytics/dashboards/create-dashboard",
-          "analytics/reports/scheduled-reports"
+          "agents/build",
+          "agents/monitor"
         ]
       },
       {
@@ -68,10 +58,34 @@
         "icon": "plug",
         "expanded": true,
         "pages": [
-          "integrations/quickstart",
-          "integrations/authentication",
-          "integrations/connectors/crm",
-          "integrations/webhooks/configure"
+          "integrations/teamcenter",
+          "integrations/sap"
+        ]
+      },
+      {
+        "group": "Use cases",
+        "icon": "factory",
+        "expanded": true,
+        "pages": [
+          "use-cases/engineering-doc-sync",
+          "use-cases/change-orders"
+        ]
+      },
+      {
+        "group": "Administration",
+        "icon": "shield",
+        "expanded": true,
+        "pages": [
+          "administration/users-and-audit"
+        ]
+      },
+      {
+        "group": "Help",
+        "icon": "life-buoy",
+        "expanded": true,
+        "pages": [
+          "troubleshooting",
+          "support"
         ]
       }
     ]
@@ -81,17 +95,19 @@
     "dark": "/logo/dark.svg"
   },
   "navbar": {
-    "links": [],
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@reeva.ai"
+      }
+    ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Sign in",
+      "href": "https://app.reeva.ai"
     }
   },
   "footer": {
-    "socials": {
-      "x": "https://x.com/yourcompany",
-      "linkedin": "https://linkedin.com/company/yourcompany"
-    }
+    "socials": {}
   }
 }

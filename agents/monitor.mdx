@@ -1,0 +1,65 @@
+---
+title: Monitor agents
+sidebarTitle: Monitor
+description: Review what your agents produced, sort by confidence, and approve flagged items.
+---
+
+The **Monitor** page is the shared view of every item your agents have processed. It's where you spend your time after agents are running — reviewing flagged results, exporting published data, and spotting agents whose confidence is dropping.
+
+## What you see
+
+Each row is a single item produced by an agent. Columns:
+
+| Column | Meaning |
+| --- | --- |
+| **Item** | The ID and name of the record (e.g., a SKU, a drawing number, a material). |
+| **Agent** | Which agent produced this item. |
+| **Status** | Where this item is in the workflow. See statuses below. |
+| **Confidence** | How confident the agent was in its result, as a percentage. |
+| **Updated** | When the item last changed. |
+
+## Statuses
+
+<CardGroup cols={2}>
+  <Card title="Published" icon="check">
+    The agent produced a result with high confidence and wrote it to the destination system. No action needed.
+  </Card>
+  <Card title="Flagged" icon="flag">
+    The result fell below the confidence threshold or hit a guardrail. Open the item, review, and approve or correct it.
+  </Card>
+  <Card title="Linked" icon="link">
+    The item was successfully matched to its counterpart in another system (e.g., a Teamcenter drawing linked to a SAP material).
+  </Card>
+  <Card title="Queued" icon="hourglass">
+    The item is waiting to be processed — usually because an upstream step is still running or an integration is offline.
+  </Card>
+</CardGroup>
+
+## Filter and triage
+
+Use the status pills above the table (**All / Published / Flagged / Linked / Queued**) to narrow down to what needs attention. Triage flagged items first — they're the ones blocking the workflow.
+
+## Review a flagged item
+
+Click any flagged row to open its review panel. From there you can:
+
+- See the source data the agent worked from
+- See the AI-extracted result and confidence
+- Approve, edit, or reject the result
+- See which step in the agent produced the result
+
+Approving a flagged item commits the result and moves it to **Published**. Rejecting it sends it back into the queue or marks it for the agent to ignore — depending on how the agent's decision step is configured.
+
+## Export
+
+Click **Export** in the top-right to download the current filtered view as a CSV. Useful for sharing with people who don't have Reeva accounts, or for offline review.
+
+## Tips
+
+- **Watch confidence trends.** If an agent's average confidence drops, something upstream has changed — a new document format, a renamed field, a new product line. Open a few flagged items to see the pattern.
+- **Don't auto-approve flagged items in bulk.** They're flagged for a reason. If too many are flagged, lower the agent's confidence threshold deliberately rather than rubber-stamping the results.
+
+## Next steps
+
+- Iterate on the agent in [Build an agent](/agents/build).
+- Check the [audit trail](/administration/users-and-audit) to see who approved what.

@@ -102,12 +102,12 @@ body:has([data-product-guide-index]) #sidebar a.nav-anchor[href='/'] svg {
   flex-direction: column !important;
   justify-content: space-between !important;
   min-height: 260px;
-  background: url('/images/sample-feature-light.png') center / cover no-repeat !important;
+  background: linear-gradient(135deg, #003527 0%, #00B777 100%) !important;
   border: none !important;
   box-shadow: none !important;
   color: white !important;
   .dark & {
-    background-image: url('/images/sample-feature-dark.png') !important;
+    background: linear-gradient(135deg, #00120E 0%, #00B777 100%) !important;
   }
 }
 

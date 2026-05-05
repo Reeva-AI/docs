@@ -1,0 +1,67 @@
+---
+title: Connect Teamcenter
+sidebarTitle: Teamcenter
+description: Connect Reeva to Siemens Teamcenter so agents can read drawings, datasets, and item revisions.
+---
+
+The Teamcenter integration lets Reeva agents read items, item revisions, datasets, and attached files from your Teamcenter PLM, and (optionally) write attribute updates back.
+
+## What Reeva can do with Teamcenter
+
+- **Read** items, item revisions, and dataset metadata
+- **Download** attached files (drawings, PDFs, spec sheets, native CAD)
+- **Watch** for new items, revisions, or releases as triggers
+- **Write** attribute updates back to specific items (when configured by an admin)
+
+## Before you connect
+
+Get the following from your Teamcenter administrator:
+
+- The Teamcenter base URL (e.g., `https://teamcenter.yourcompany.com/tc`)
+- A service account username and password with read access to the items you want Reeva to see
+- The list of item types and dataset types Reeva should be allowed to read
+
+<Note>
+  Reeva connects to Teamcenter using its standard web services. If your Teamcenter is on-prem and behind a firewall, your IT team will need to allow Reeva's egress IPs through. Email [support@reeva.ai](mailto:support@reeva.ai) for the current allowlist.
+</Note>
+
+## Connect
+
+<Steps>
+  <Step title="Open the integration">
+    Go to **Settings → Integrations** and click **Connect** on the **Teamcenter** card.
+  </Step>
+  <Step title="Enter your connection details">
+    Paste the base URL and service account credentials from your admin. Click **Test connection**. Reeva will confirm it can authenticate before saving.
+  </Step>
+  <Step title="Scope what Reeva can access">
+    Choose which item types and dataset types this connection should expose to agents. Start narrow — you can widen the scope later.
+  </Step>
+  <Step title="Save">
+    Click **Connect**. The card will switch to **Connected**. You can now reference Teamcenter as a source or destination in any agent.
+  </Step>
+</Steps>
+
+## Using Teamcenter in an agent
+
+Once connected, Teamcenter shows up as an option in:
+
+- **Trigger** steps — fire on new items, new revisions, or release status changes
+- **Action** steps — fetch a dataset's attached files, look up an item by ID, write an attribute back
+- **AI** steps — pass Teamcenter documents (PDFs, spec sheets) to an extraction or classification step
+
+See [Build an agent](/agents/build) for how to wire these together.
+
+## Permissions and safety
+
+- The service account's permissions cap what Reeva can do. If the account has read-only access, no agent can write back, even if you configure a write action.
+- Every Teamcenter read and write that Reeva performs is recorded in the [audit trail](/administration/users-and-audit).
+- Disconnecting Teamcenter immediately stops any agent that depends on it; in-flight items move to **Queued** until the connection is restored.
+
+## Troubleshooting
+
+- **"Authentication failed"** — Re-check the username, password, and base URL. Service account passwords sometimes expire on a different schedule than user passwords.
+- **"Cannot reach Teamcenter"** — Your IT team likely needs to allow Reeva's egress IPs through the firewall. Contact [support@reeva.ai](mailto:support@reeva.ai) for the list.
+- **Agent can't see an item** — Check the item type is included in the scope on the integration card.
+
+For more, see [Troubleshooting](/troubleshooting).

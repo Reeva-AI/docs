@@ -1,0 +1,88 @@
+---
+title: Link engineering docs across Teamcenter and SAP
+sidebarTitle: Engineering doc sync
+description: Build an agent that links Teamcenter drawings and specs to the right SAP material masters, automatically.
+---
+
+This is the canonical Reeva workflow: keep engineering documents and the data on them **linked and consistent** across Teamcenter and SAP, so engineers stop rekeying and operators stop hunting for the "real" version.
+
+## What this agent does
+
+When a new revision of a drawing or spec is released in Teamcenter:
+
+1. Fetch the document and any related metadata
+2. Use AI to match it to the corresponding SAP material master
+3. Extract the attributes that belong on that material (grade, dimensions, tolerances, classification)
+4. If the match and the extraction are high-confidence, write the link and updated attributes back to SAP
+5. Otherwise, flag it in **Monitor** for an engineer to review
+
+## Before you start
+
+- [Teamcenter](/integrations/teamcenter) is **Connected**
+- [SAP](/integrations/sap) is **Connected**
+- You know which Teamcenter item types correspond to which SAP material types in your business
+- A test item in Teamcenter you can use to verify the agent works end to end
+
+## Build the agent
+
+<Steps>
+  <Step title="Create the agent">
+    On **Agents**, click **New Agent**. Name it something like *"Link drawings to SAP materials"* and add a one-line description.
+  </Step>
+  <Step title="Add the trigger">
+    Add a **trigger** step:
+    - Source: **Teamcenter**
+    - Event: **New item revision released**
+    - Scope: the item types you want to handle (e.g., `Drawing`, `Specification`)
+  </Step>
+  <Step title="Fetch the document">
+    Add an **action** step:
+    - Integration: **Teamcenter**
+    - Operation: **Fetch dataset files**
+    - Output: the attached PDF, native CAD, or spec sheet
+  </Step>
+  <Step title="Match it to a SAP material">
+    Add an **AI** step:
+    - Input: the Teamcenter item ID, name, and the document fetched in the previous step
+    - Task: *"Find the SAP material master that corresponds to this Teamcenter item. Use the part number, description, and any classification metadata."*
+    - Output: a SAP material number and a confidence score
+  </Step>
+  <Step title="Extract attributes from the document">
+    Add another **AI** step:
+    - Input: the document content
+    - Task: *"Extract the following attributes: material grade, primary dimensions, tolerance class, surface finish."*
+    - Output: a structured record and a confidence score per field
+  </Step>
+  <Step title="Add the confidence gate">
+    Add a **decision** step:
+    - Condition: match confidence ≥ 95% **and** all extracted attributes ≥ 90%
+    - **High-confidence branch:** continue to write step
+    - **Low-confidence branch:** mark as **Flagged** in Monitor
+  </Step>
+  <Step title="Write back to SAP">
+    Add an **action** step on the high-confidence branch:
+    - Integration: **SAP**
+    - Operation: **Update material classification + link document**
+    - Inputs: the material number from step 4, the attributes from step 5, the Teamcenter document URL
+  </Step>
+  <Step title="Turn it on">
+    Toggle the agent **on**. Release a test revision in Teamcenter to confirm the agent picks it up.
+  </Step>
+</Steps>
+
+## Verify it's working
+
+- Open **Monitor** and filter by this agent
+- Newly processed items should appear within a minute or two of the Teamcenter release
+- Flagged items should be the ones where the match or extraction was uncertain — review them and either approve, edit, or update the agent's instructions
+
+## Tips
+
+- **Run in shadow mode first.** For the first week, replace the SAP write step with an export to **Monitor** only. Review the proposed links and attributes before letting the agent write to SAP.
+- **Be strict with your confidence threshold.** SAP material data is hard to fix once it's wrong. 95%+ for the match and 90%+ per field is a good starting point.
+- **Use the audit trail.** Every write Reeva makes to SAP is logged. If something looks off in SAP, the [audit trail](/administration/users-and-audit) tells you which agent run produced it.
+
+## Related
+
+- [Route engineering changes](/use-cases/change-orders) — handle engineering change notices once the link exists.
+- [Monitor](/agents/monitor) — review what your agent produced.

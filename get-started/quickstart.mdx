@@ -1,0 +1,50 @@
+---
+title: Quickstart
+sidebarTitle: Quickstart
+description: Sign in, connect your first system, and run your first agent in about 15 minutes.
+---
+
+This guide takes you from a fresh sign-in to a running agent. It assumes someone on your team already has admin access to Reeva and to at least one of Teamcenter or SAP.
+
+## Before you begin
+
+- An invite email from Reeva (or sign-in credentials)
+- Read access to the system you want Reeva to pull from (typically Teamcenter or SAP)
+- A clear idea of one repetitive task you want to automate — start narrow
+
+<Tip>
+  The smallest useful first agent is one that **reads** from a system you already use and writes results to **Monitor** — no downstream writes yet. You can review the output before turning on the write step.
+</Tip>
+
+## Steps
+
+<Steps>
+  <Step title="Sign in">
+    Go to [app.reeva.ai](https://app.reeva.ai) and sign in with the email and password from your invite. If you have SSO set up, use the **Sign in with SSO** button instead.
+  </Step>
+  <Step title="Connect a source system">
+    Open **Settings → Integrations** and click **Connect** on the system you want to read from — for example, Teamcenter. Follow the prompts and paste in the credentials your IT team provided. See the integration guides for [Teamcenter](/integrations/teamcenter) and [SAP](/integrations/sap).
+  </Step>
+  <Step title="Create your first agent">
+    Go to **Agents** and click **New Agent**. Give it a clear name (e.g., "Link new drawings to SAP materials") and a one-line description of what it should do. Reeva starts you with a blank canvas.
+  </Step>
+  <Step title="Add steps">
+    Click **Add Step** to add a **trigger**, then one or more **action** and **AI** steps, and a final **decision** step that controls whether the result is published or flagged. See [Build an agent](/agents/build) for a walkthrough of each step type.
+  </Step>
+  <Step title="Run it on a sample">
+    Toggle the agent **on** in the top-right of the agent detail page. The first run will pick up the next item that matches your trigger. You can also use **Conversations** to ask Reeva to run the agent against a specific item.
+  </Step>
+  <Step title="Review the output in Monitor">
+    Open **Monitor** to see what the agent produced. Items appear with a status (published, flagged, linked, queued) and a confidence score. Review flagged items and adjust your agent if needed.
+  </Step>
+</Steps>
+
+<Note>
+  If a step depends on IT (network access between Reeva and your on-prem Teamcenter or SAP, SSO setup), you can build and dry-run the rest of the agent in parallel.
+</Note>
+
+## Next steps
+
+- Read [Build an agent](/agents/build) to learn the four step types in detail.
+- Try the canonical workflow: [Link engineering docs Teamcenter ↔ SAP](/use-cases/engineering-doc-sync).
+- Set up [users and roles](/administration/users-and-audit) before inviting more teammates.

@@ -1,0 +1,92 @@
+---
+title: Troubleshooting
+sidebarTitle: Troubleshooting
+description: Quick fixes for the most common issues people run into in Reeva.
+---
+
+If something isn't working, start here. If you're still stuck after trying the relevant section below, email [support@reeva.ai](mailto:support@reeva.ai) with the agent name (or integration name), the time the issue occurred, and a screenshot if you have one.
+
+## Sign-in
+
+### "Invalid email or password"
+
+- Make sure caps lock is off.
+- Use the same email the invite was sent to — not an alias.
+- If your team uses SSO, click **Sign in with SSO** instead of typing a password.
+- If your invite is older than 7 days, ask an admin to re-send it.
+
+### SSO loop or "user not found"
+
+Your account exists in your identity provider but hasn't been provisioned in Reeva yet, or your email there doesn't match the invite. Ask an admin to re-invite you with the email your IdP uses.
+
+## Integrations
+
+### Teamcenter "Authentication failed"
+
+- Re-check the username, password, and base URL on **Settings → Integrations**.
+- Service account passwords sometimes expire on a different schedule than user passwords — your admin can confirm.
+- If credentials are correct, your IT team may need to allow Reeva's egress IPs through the firewall. Email [support@reeva.ai](mailto:support@reeva.ai) for the current allowlist.
+
+### SAP "Authorization missing"
+
+The service user can reach SAP but lacks the authorization object needed for the transaction Reeva is calling. The error message includes a code (e.g., `M_MATE_BUK`). Send it to your Basis team and ask them to grant the missing object.
+
+### Integration shows **Disconnected** unexpectedly
+
+- Open the integration on **Settings → Integrations** and click **Test connection**.
+- If the test fails, the credentials or endpoint may have changed. Update them and reconnect.
+- If the test passes but it still shows disconnected, refresh the page. If that doesn't fix it, contact support.
+
+### An agent that depends on a disconnected integration
+
+Items currently being processed move to **Queued** in Monitor. They'll resume automatically once the integration is reconnected. No data is lost.
+
+## Agents
+
+### Agent isn't running
+
+- Check the toggle in the top-right of the agent detail page is **on**.
+- Check the trigger condition — is the trigger event actually happening? For "new item revision released" triggers, confirm a release has happened since you turned the agent on.
+- Check the integrations the agent depends on are **Connected**.
+
+### Every item is being flagged
+
+The confidence threshold in your decision step is probably too high for the data quality you're working with, or the AI step's instructions are too vague.
+
+- Open a few flagged items in **Monitor** and look at the actual results — are they correct but just below threshold, or actually wrong?
+- If correct: lower the confidence threshold deliberately.
+- If wrong: tighten the AI step's description so it has more specific instructions about what to extract or match.
+
+### Confidence is dropping over time
+
+Something upstream changed — a new document format, a renamed field, a new product line, a different supplier. Open three or four flagged items to spot the pattern, then update the agent's AI step description.
+
+### Agent is slow
+
+- Most slowness comes from one specific step. Open the agent and look at recent runs — the step editor shows which step is taking the longest.
+- For action steps that talk to Teamcenter or SAP, the bottleneck is often on the source system itself, not Reeva.
+
+## Monitor
+
+### A row is stuck in **Queued**
+
+The agent's trigger fired, but a downstream step is waiting on something — usually a disconnected integration or a slow upstream system. Once the dependency comes back, the queue drains automatically.
+
+### A flagged item won't approve
+
+You don't have the role required to approve. Ask an Admin or Product Manager to approve, or have an admin change your role on **Settings → Users & Roles**.
+
+### Export is empty
+
+Exports respect the current filter. Clear all filters and try again, or check that the date range you're filtering on actually contains items.
+
+## Still stuck?
+
+Email [support@reeva.ai](mailto:support@reeva.ai). Include:
+
+- What you were trying to do
+- What you saw instead (screenshot if possible)
+- Agent name or integration name
+- Approximate time the issue occurred (with timezone)
+
+See [Support](/support) for hours and response times.
