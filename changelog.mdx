@@ -1,0 +1,64 @@
+---
+title: Changelog
+sidebarTitle: Changelog
+description: Recent updates, improvements, and fixes shipped to Reeva.
+---
+
+The latest changes to the Reeva platform. We post updates here as we ship them. For questions or to request a feature, email [support@reeva.ai](mailto:support@reeva.ai).
+
+<Update label="v0.3.0" description="April 30, 2026">
+
+### Added
+
+- **Hardened web security headers** across the app — HSTS, Content-Security-Policy, Referrer-Policy, and X-Content-Type-Options are now set on every response.
+- Published a `security.txt` policy at the standard `/.well-known/security.txt` location for vulnerability disclosure.
+
+### Fixed
+
+- Image deploys no longer fail when a Cloud Run revision is re-pushed with the same source SHA.
+
+</Update>
+
+<Update label="v0.2.0" description="April 29, 2026">
+
+A focused security and multi-tenancy release.
+
+### Added
+
+- **JWT-based authentication** backed by real user accounts. Sessions are now issued and validated against the users table.
+- **HttpOnly session cookies** with a frontend auth-guard via `/auth/me`, so tokens are no longer accessible to client-side scripts.
+- **Tenant scoping** enforced on every customer-keyed API route. Users can only ever read or write data that belongs to their own tenant.
+- **Customer integration credentials are encrypted at rest** in the database using a managed KMS key.
+- **Rate limiting** on the API, plus a per-customer budget guardrail that blocks LLM calls before they exceed configured spend limits.
+- **Stricter CSV upload validation** — file size, encoding, and column shape are now checked before a file ever reaches an agent.
+- **Audit log** of every presigned URL issued, with shorter TTLs by default.
+
+### Changed
+
+- 5xx error responses are now sanitized — internal stack traces and library names no longer leak in production responses.
+- `CORS_ORIGINS` is validated at startup; the API refuses to boot if a misconfigured origin would leave the app exposed.
+- Untrusted CSV data is isolated from instructions in AI step prompts to reduce prompt-injection surface.
+- Tightened the default Content-Security-Policy on the API.
+- Pinned the Python base image by sha256 digest for reproducible builds.
+
+### Fixed
+
+- Path construction for customer-scoped storage now validates `customer_id` as a UUID before use.
+
+</Update>
+
+<Update label="v0.1.0" description="April 24, 2026">
+
+The first deployable release of the Reeva platform.
+
+### Added
+
+- **Agent builder UI** — initial scaffold of the app, including login, the monitor view, and settings.
+- **Production deploy pipeline** — API and worker services are dockerized and deploy to Cloud Run from CI.
+- **Cloudflare DNS and WAF** in front of the app, with IP access rules and VPC flow logs configured for SOC 2.
+- **Cloud SQL alerting** on memory, disk, and I/O, wired to an email notification channel.
+- **Terraform-managed GCP infrastructure** as the source of truth for production environments.
+- **Runbooks and SOC 2 evidence** committed to the repo.
+- **Repository hardening** — branch protection, code owners, and dependency review for every change that touches the platform.
+
+</Update>

@@ -87,6 +87,14 @@
           "troubleshooting",
           "support"
         ]
+      },
+      {
+        "group": "Changelog",
+        "icon": "history",
+        "expanded": true,
+        "pages": [
+          "changelog"
+        ]
       }
     ]
   },
